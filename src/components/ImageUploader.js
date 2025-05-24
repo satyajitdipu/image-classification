@@ -26,6 +26,8 @@ const ImageUpload = () => {
         "https://api-inference.huggingface.co/models/google/vit-base-patch16-224",
         {
           headers: { Authorization: "Bearer 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" }, 
+
+
           method: "POST",
           body: data,
         }
@@ -39,6 +41,7 @@ const ImageUpload = () => {
       if (response && response.length > 0) {
         setPredictions(response); // Store all predictions
       } else {
+
         setPredictions([]);
       }
     } catch (error) {
@@ -65,10 +68,19 @@ const ImageUpload = () => {
             )}
             {predictions.length > 0 ? (
               predictions.map((prediction, index) => (
-                <div key={index} className={chat-message mb-3 ${index % 2 === 0 ? 'text-left' : 'text-right'}}>
-                  <div className={p-3 rounded ${index % 2 === 0 ? 'bg-primary text-white' : 'bg-secondary text-white'}}>
+                <div key={index} className={`chat-message mb-3 ${index % 2 === 0 ? 'text-left' : 'text-right'}`}>
+                  <div className={`p-3 rounded ${index % 2 === 0 ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
+
+
+
+
+
                     <h5 className="mb-1">Prediction {index + 1}</h5>
                     <p>Your uploaded image is <strong>{prediction.label}</strong> with a confidence score of <strong>{(prediction.score * 100).toFixed(2)}%</strong>.</p>
+
+
+
+
                   </div>
                 </div>
               ))
