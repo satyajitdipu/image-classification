@@ -26,7 +26,7 @@ const ImageUpload = () => {
         "https://api-inference.huggingface.co/models/falconsai/nsfw-image-detection",
         {
           headers: {
-            Authorization: "Bearer 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",
+            Authorization: "Bearer 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",
           },
           method: "POST",
           body: data,
