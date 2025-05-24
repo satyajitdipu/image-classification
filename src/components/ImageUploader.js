@@ -25,7 +25,7 @@ const ImageUpload = () => {
       const response = await fetch(
         "https://api-inference.huggingface.co/models/google/vit-base-patch16-224",
         {
-          headers: { Authorization: "Bearer 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" }, 
+          headers: { Authorization: "Bearer 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" }, 
           method: "POST",
           body: data,
         }
