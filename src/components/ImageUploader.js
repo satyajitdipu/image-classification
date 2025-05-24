@@ -3,13 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ImageUpload = () => {
   const [file, setFile] = useState(null);
-  const [predictions, setPredictions] = useState([]); // Array for multiple predictions
-  const [imageURL, setImageURL] = useState(null); // Store the image URL
+  const [predictions, setPredictions] = useState([]);
+  const [imageURL, setImageURL] = useState(null);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
-    setImageURL(URL.createObjectURL(selectedFile)); // Create a URL for the uploaded image
+    setImageURL(URL.createObjectURL(selectedFile));
   };
 
   const handleSubmit = async (e) => {
@@ -23,9 +23,11 @@ const ImageUpload = () => {
     const query = async (file) => {
       const data = await file.arrayBuffer();
       const response = await fetch(
-        "https://api-inference.huggingface.co/models/google/vit-base-patch16-224",
+        "https://api-inference.huggingface.co/models/falconsai/nsfw-image-detection",
         {
-          headers: { Authorization: "Bearer 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" }, 
+          headers: {
+            Authorization: "Bearer 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",
+          },
           method: "POST",
           body: data,
         }
@@ -36,13 +38,14 @@ const ImageUpload = () => {
 
     try {
       const response = await query(file);
-      if (response && response.length > 0) {
-        setPredictions(response); // Store all predictions
+      if (Array.isArray(response) && response.length > 0) {
+        setPredictions(response);
       } else {
+        console.error("Unexpected response:", response);
         setPredictions([]);
       }
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error("Error uploading file:", error);
     }
   };
 
@@ -65,10 +68,19 @@ const ImageUpload = () => {
             )}
             {predictions.length > 0 ? (
               predictions.map((prediction, index) => (
-                <div key={index} className={`chat-message mb-3 ${index % 2 === 0 ? 'text-left' : 'text-right'}`}>
-                  <div className={`p-3 rounded ${index % 2 === 0 ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
+                <div
+                  key={index}
+                  className={`chat-message mb-3 ${index % 2 === 0 ? 'text-left' : 'text-right'}`}
+                >
+                  <div
+                    className={`p-3 rounded ${index % 2 === 0 ? 'bg-primary text-white' : 'bg-secondary text-white'}`}
+                  >
                     <h5 className="mb-1">Prediction {index + 1}</h5>
-                    <p>Your uploaded image is <strong>{prediction.label}</strong> with a confidence score of <strong>{(prediction.score * 100).toFixed(2)}%</strong>.</p>
+                    <p>
+                      This image is classified as{' '}
+                      <strong>{prediction.label.toUpperCase()}</strong> with a confidence of{' '}
+                      <strong>{(prediction.score * 100).toFixed(2)}%</strong>.
+                    </p>
                   </div>
                 </div>
               ))
