@@ -22,16 +22,18 @@ const ImageUpload = () => {
 
     const query = async (file) => {
       const data = await file.arrayBuffer();
-      const response = await fetch(
-        "https://api-inference.huggingface.co/models/falconsai/nsfw-image-detection",
-        {
-          headers: {
-            Authorization: "Bearer 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",
-          },
-          method: "POST",
-          body: data,
-        }
-      );
+     const response = await fetch(
+  "https://api-inference.huggingface.co/models/moderate-content/NSFW-image-detection",
+  {
+    headers: {
+      Authorization: "Bearer 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",
+      "Content-Type": "application/octet-stream",
+    },
+    method: "POST",
+    body: data,
+  }
+);
+
       const result = await response.json();
       return result;
     };
